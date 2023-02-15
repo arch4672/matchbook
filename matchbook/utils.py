@@ -1,4 +1,3 @@
-
 import datetime
 from matchbook.exceptions import ApiError
 
@@ -12,7 +11,7 @@ def clean_time(col):
     :rtype: series
 
     """
-    return col.apply(lambda x: datetime.datetime.strptime(x, '%Y-%m-%dT%H:%M:%S.%fZ'))
+    return col.apply(lambda x: datetime.datetime.strptime(x, "%Y-%m-%dT%H:%M:%S.%fZ"))
 
 
 def filter_dicts(d):
@@ -37,17 +36,19 @@ def clean_locals(params):
     :returns: cleaned locals dict to use as params for functions
     :rtype: dict
     """
-    clean_params = dict((k, v) for k, v in params.items() if v is not None and k != 'self' and k != 'session')
-    for k, v in clean_params.items():
-        if '_' in k:
-            new_key = k.replace('_', '-')
-            clean_params[new_key] = v
-            clean_params.pop(k)
-    return clean_params
+    clean_params = dict(
+        (k, v)
+        for k, v in params.items()
+        if v is not None and k != "self" and k != "session"
+    )
+
+    return {k.replace("_", "-"): v for k, v in clean_params.items()}
 
 
 def check_call_complete(response):
-    return response.get('total', 0) < (response.get('per-page', 20) + response.get('offset', 0))
+    return response.get("total", 0) < (
+        response.get("per-page", 20) + response.get("offset", 0)
+    )
 
 
 def check_status_code(response, codes=None):
