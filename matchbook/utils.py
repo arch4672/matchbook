@@ -24,7 +24,7 @@ def filter_dicts(d):
     :rtype: dict
 
     """
-    return dict((k, v) for k, v in d.items() if v is not None)
+    return {k: v for k, v in d.items() if v is not None}
 
 
 def clean_locals(params):
@@ -36,11 +36,11 @@ def clean_locals(params):
     :returns: cleaned locals dict to use as params for functions
     :rtype: dict
     """
-    clean_params = dict(
-        (k, v)
+    clean_params = {
+        k: v
         for k, v in params.items()
         if v is not None and k != "self" and k != "session"
-    )
+    }
 
     return {k.replace("_", "-"): v for k, v in clean_params.items()}
 
