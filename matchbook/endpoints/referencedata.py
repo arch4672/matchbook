@@ -124,7 +124,7 @@ class ReferenceData(BaseEndpoint):
         response = self.request(
             "GET",
             self.client.urn_main,
-            "lookups/regions/%s" % country_id,
+            f"lookups/regions/{country_id}",
             session=session,
         )
         return self.process_response(
