@@ -1,4 +1,3 @@
-
 import datetime
 
 from matchbook import resources
@@ -8,11 +7,23 @@ from matchbook.utils import clean_locals
 
 
 class MarketData(BaseEndpoint):
-
-    def get_events(self, event_id=None, before=None, after=None, sport_ids=None, category_ids=None,
-                   states=MarketStates.All, tag_url_names=None, per_page=500, offset=0,
-                   include_event_participants=Boolean.T, price_depth=3, side=Side.All,
-                   minimum_liquidity=None, session=None):
+    def get_events(
+        self,
+        event_id=None,
+        before=None,
+        after=None,
+        sport_ids=None,
+        category_ids=None,
+        states=MarketStates.All,
+        tag_url_names=None,
+        per_page=500,
+        offset=0,
+        include_event_participants=Boolean.T,
+        price_depth=3,
+        side=Side.All,
+        minimum_liquidity=None,
+        session=None,
+    ):
         """
         Get paginated events. Results can be filtered using various different parameters.
 
@@ -50,25 +61,55 @@ class MarketData(BaseEndpoint):
         """
         params = clean_locals(locals())
         date_time_sent = datetime.datetime.utcnow()
-        method = 'events'
-        params['odds-type'] = self.client.odds_type
-        params['exchange-type'] = self.client.exchange_type
-        params['currency'] = self.client.currency
+        method = "events"
+        params["odds-type"] = self.client.odds_type
+        params["exchange-type"] = self.client.exchange_type
+        params["currency"] = self.client.currency
         if event_id:
-            method = 'events/%s' % event_id
-            del_keys = ['event-id', 'after', 'before', 'category-ids', 'sport-ids',
-                        'states', 'per-page', 'offset', 'tag-url-names']
+            method = f"events/{event_id}"
+            del_keys = [
+                "event-id",
+                "after",
+                "before",
+                "category-ids",
+                "sport-ids",
+                "states",
+                "per-page",
+                "offset",
+                "tag-url-names",
+            ]
             params = {k: v for k, v in params.items() if k not in del_keys}
-            response = self.request("GET", self.client.urn_edge, method, params=params, session=session)
-            response = response.json().get('event', response.json())
+            response = self.request(
+                "GET", self.client.urn_edge, method, params=params, session=session
+            )
+            response = response.json().get("event", response.json())
         else:
             response = self.request(
-                "GET", self.client.urn_edge, method, params=params, target='events', session=session
+                "GET",
+                self.client.urn_edge,
+                method,
+                params=params,
+                target="events",
+                session=session,
             )
-        return self.process_response(response, resources.Event, date_time_sent, datetime.datetime.utcnow())
+        return self.process_response(
+            response, resources.Event, date_time_sent, datetime.datetime.utcnow()
+        )
 
-    def get_markets(self, event_id, market_id=None, names=MarketNames.All, types=MarketType.All, offset=0, per_page=500,
-                    states=MarketStates.All, price_depth=3, side=Side.Default, minimum_liquidity=None, session=None):
+    def get_markets(
+        self,
+        event_id,
+        market_id=None,
+        names=MarketNames.All,
+        types=MarketType.All,
+        offset=0,
+        per_page=500,
+        states=MarketStates.All,
+        price_depth=3,
+        side=Side.Default,
+        minimum_liquidity=None,
+        session=None,
+    ):
         """
         Get paginated markets for an event specified by the event_id.
 
@@ -100,24 +141,44 @@ class MarketData(BaseEndpoint):
         """
         params = clean_locals(locals())
         date_time_sent = datetime.datetime.utcnow()
-        params['odds-type'] = self.client.odds_type
-        params['exchange-type'] = self.client.exchange_type
-        params['currency'] = self.client.currency
-        method = 'events/%s/markets' % event_id
+        params["odds-type"] = self.client.odds_type
+        params["exchange-type"] = self.client.exchange_type
+        params["currency"] = self.client.currency
+        method = f"events/{event_id}/markets"
         if market_id:
-            method = 'events/%s/markets/%s' % (event_id, market_id)
-            del_keys = ['names', 'types', 'per-page', 'offset', 'states']
+            method = f"events/{event_id}/markets/{market_id}"
+            del_keys = ["names", "types", "per-page", "offset", "states"]
             params = {k: v for k, v in params.items() if k not in del_keys}
-            response = self.request('GET', self.client.urn_edge, method, params=params, session=session)
-            response = response.json().get('market', response.json())
+            response = self.request(
+                "GET", self.client.urn_edge, method, params=params, session=session
+            )
+            response = response.json().get("market", response.json())
         else:
             response = self.request(
-                "GET", self.client.urn_edge, method, params=params, target='markets', session=session
+                "GET",
+                self.client.urn_edge,
+                method,
+                params=params,
+                target="markets",
+                session=session,
             )
-        return self.process_response(response, resources.Market, date_time_sent, datetime.datetime.utcnow())
+        return self.process_response(
+            response, resources.Market, date_time_sent, datetime.datetime.utcnow()
+        )
 
-    def get_runners(self, event_id, market_id, runner_id=None, states=MarketStates.All, include_withdrawn=Boolean.T,
-                    include_prices=Boolean.T, price_depth=3, side=Side.All, minimum_liquidity=None, session=None):
+    def get_runners(
+        self,
+        event_id,
+        market_id,
+        runner_id=None,
+        states=MarketStates.All,
+        include_withdrawn=Boolean.T,
+        include_prices=Boolean.T,
+        price_depth=3,
+        side=Side.All,
+        minimum_liquidity=None,
+        session=None,
+    ):
         """
         Get runner data for an event and market specified by their ids.
 
@@ -147,24 +208,39 @@ class MarketData(BaseEndpoint):
         """
         params = clean_locals(locals())
         date_time_sent = datetime.datetime.utcnow()
-        params['odds-type'] = self.client.odds_type
-        params['exchange-type'] = self.client.exchange_type
-        params['currency'] = self.client.currency
-        method = 'events/%s/markets/%s/runners' % (event_id, market_id)
+        params["odds-type"] = self.client.odds_type
+        params["exchange-type"] = self.client.exchange_type
+        params["currency"] = self.client.currency
+        method = f"events/{event_id}/markets/{market_id}/runners"
         if runner_id:
-            method = 'events/%s/markets/%s/runners/%s' % (event_id, market_id, runner_id)
-            del_keys = ['include-withdraw', 'states']
+            method = f"events/{event_id}/markets/{market_id}/runners/{runner_id}"
+            del_keys = ["include-withdraw", "states"]
             params = {k: v for k, v in params.items() if k not in del_keys}
-            response = self.request('GET', self.client.urn_edge, method, params=params, session=session)
-            response = response.json().get('runner', response.json())
+            response = self.request(
+                "GET", self.client.urn_edge, method, params=params, session=session
+            )
+            response = response.json().get("runner", response.json())
         else:
             response = self.request(
-                'GET', self.client.urn_edge, method, params=params, target='runners', session=session
+                "GET",
+                self.client.urn_edge,
+                method,
+                params=params,
+                target="runners",
+                session=session,
             ).json()
-        return self.process_response(response, resources.Runner, date_time_sent, datetime.datetime.utcnow())
+        return self.process_response(
+            response, resources.Runner, date_time_sent, datetime.datetime.utcnow()
+        )
 
-    def get_popular_markets(self, price_depth=3, side=Side.All, minimum_liquidity=None,
-                            old_format=Boolean.F, session=None):
+    def get_popular_markets(
+        self,
+        price_depth=3,
+        side=Side.All,
+        minimum_liquidity=None,
+        old_format=Boolean.F,
+        session=None,
+    ):
         """
         Get popular markets as defined by matchbook.
 
@@ -184,11 +260,19 @@ class MarketData(BaseEndpoint):
         """
         params = clean_locals(locals())
         date_time_sent = datetime.datetime.utcnow()
-        params['odds-type'] = self.client.odds_type
-        params['exchange-type'] = self.client.exchange_type
-        params['currency'] = self.client.currency
-        response = self.request('GET', self.client.urn_edge, 'popular-markets', params=params, session=session)
+        params["odds-type"] = self.client.odds_type
+        params["exchange-type"] = self.client.exchange_type
+        params["currency"] = self.client.currency
+        response = self.request(
+            "GET",
+            self.client.urn_edge,
+            "popular-markets",
+            params=params,
+            session=session,
+        )
         return self.process_response(
-            response.json().get('markets', response.json()), resources.Market,
-            date_time_sent, datetime.datetime.utcnow()
+            response.json().get("markets", response.json()),
+            resources.Market,
+            date_time_sent,
+            datetime.datetime.utcnow(),
         )
