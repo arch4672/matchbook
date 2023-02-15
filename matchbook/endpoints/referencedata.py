@@ -7,11 +7,10 @@ from matchbook.enums import SportsOrder, MarketStates
 
 
 class ReferenceData(BaseEndpoint):
-
     def get_currencies(self, session=None):
         """
         Get the accepted currencies on betting platform.
-        
+
         :param session: requests session to be used.
         :type session: requests.Session
         :returns: Supported currencies.
@@ -19,12 +18,23 @@ class ReferenceData(BaseEndpoint):
         :raises: MatchbookAPI.bin.exceptions.ApiError
         """
         date_time_sent = datetime.datetime.utcnow()
-        response = self.request("GET", self.client.urn_main, 'lookups/currencies', session=session)
+        response = self.request(
+            "GET", self.client.urn_main, "lookups/currencies", session=session
+        )
         return self.process_response(
-            response.json().get('currencies', []), resources.Currencies, date_time_sent, datetime.datetime.utcnow()
+            response.json().get("currencies", []),
+            resources.Currencies,
+            date_time_sent,
+            datetime.datetime.utcnow(),
         )
 
-    def get_sports(self, status=MarketStates.All, order=SportsOrder.NameAsc, per_page=500, session=None):
+    def get_sports(
+        self,
+        status=MarketStates.All,
+        order=SportsOrder.NameAsc,
+        per_page=500,
+        session=None,
+    ):
         """
         Lookup all sports, filter for active only/all.
 
@@ -42,9 +52,18 @@ class ReferenceData(BaseEndpoint):
         """
         params = clean_locals(locals())
         date_time_sent = datetime.datetime.utcnow()
-        response = self.request("GET", self.client.urn_edge, 'lookups/sports', params=params, session=session)
+        response = self.request(
+            "GET",
+            self.client.urn_edge,
+            "lookups/sports",
+            params=params,
+            session=session,
+        )
         return self.process_response(
-            response.json().get('sports', []), resources.SportsDetails, date_time_sent, datetime.datetime.utcnow()
+            response.json().get("sports", []),
+            resources.SportsDetails,
+            date_time_sent,
+            datetime.datetime.utcnow(),
         )
 
     def get_oddstype(self, session=None):
@@ -58,9 +77,14 @@ class ReferenceData(BaseEndpoint):
         :raises: MatchbookAPI.bin.exceptions.ApiError
         """
         date_time_sent = datetime.datetime.utcnow()
-        response = self.request("GET", self.client.urn_main, 'lookups/odds-types', session=session)
+        response = self.request(
+            "GET", self.client.urn_main, "lookups/odds-types", session=session
+        )
         return self.process_response(
-            response.json().get('odds-types', []), resources.OddsType, date_time_sent, datetime.datetime.utcnow()
+            response.json().get("odds-types", []),
+            resources.OddsType,
+            date_time_sent,
+            datetime.datetime.utcnow(),
         )
 
     def get_countries(self, session=None):
@@ -74,9 +98,14 @@ class ReferenceData(BaseEndpoint):
         :raises: MatchbookAPI.bin.exceptions.ApiError
         """
         date_time_sent = datetime.datetime.utcnow()
-        response = self.request("GET", self.client.urn_main, 'lookups/countries', session=session)
+        response = self.request(
+            "GET", self.client.urn_main, "lookups/countries", session=session
+        )
         return self.process_response(
-            response.json().get('countries', []), resources.Countries, date_time_sent, datetime.datetime.utcnow()
+            response.json().get("countries", []),
+            resources.Countries,
+            date_time_sent,
+            datetime.datetime.utcnow(),
         )
 
     def get_regions(self, country_id, session=None):
@@ -92,9 +121,17 @@ class ReferenceData(BaseEndpoint):
         :raises: MatchbookAPI.bin.exceptions.ApiError
         """
         date_time_sent = datetime.datetime.utcnow()
-        response = self.request("GET", self.client.urn_main, 'lookups/regions/%s' % country_id, session=session)
+        response = self.request(
+            "GET",
+            self.client.urn_main,
+            "lookups/regions/%s" % country_id,
+            session=session,
+        )
         return self.process_response(
-            response.json().get('countries', []), resources.Regions, date_time_sent, datetime.datetime.utcnow()
+            response.json().get("regions", []),
+            resources.Regions,
+            date_time_sent,
+            datetime.datetime.utcnow(),
         )
 
     def get_navigation(self, offset=0, per_page=500, session=None):
@@ -113,7 +150,12 @@ class ReferenceData(BaseEndpoint):
         """
         params = clean_locals(locals())
         date_time_sent = datetime.datetime.utcnow()
-        response = self.request("GET", self.client.urn_edge, 'navigation', params=params, session=session)
+        response = self.request(
+            "GET", self.client.urn_edge, "navigation", params=params, session=session
+        )
         return self.process_response(
-            response.json().get('countries', []), resources.MetaTags, date_time_sent, datetime.datetime.utcnow()
+            response.json().get("countries", []),
+            resources.MetaTags,
+            date_time_sent,
+            datetime.datetime.utcnow(),
         )
