@@ -6,7 +6,6 @@ from matchbook.utils import clean_locals
 
 
 class Account(BaseEndpoint):
-
     def get_account(self, balance_only=True, session=None):
         """
         Get account information for logged in user.
@@ -20,21 +19,23 @@ class Account(BaseEndpoint):
         :raises: MatchbookAPI.bin.exceptions.ApiError
 
         """
-        method = 'account'
+        method = "account"
         resource = resources.AccountDetails
         if balance_only:
-            method = 'account/balance'
+            method = "account/balance"
             resource = resources.AccountBalance
         date_time_sent = datetime.datetime.utcnow()
         response = self.request("GET", self.client.urn_edge, method, session=session)
         date_time_received = datetime.datetime.utcnow()
-        return self.process_response(response.json(), resource, date_time_sent, date_time_received)
+        return self.process_response(
+            response.json(), resource, date_time_sent, date_time_received
+        )
 
     def wallet_transfer(self, amount, session=None):
-        #TODO: Populate Acccount Transfer Resource.
+        # TODO: Populate Acccount Transfer Resource.
         """
-        Transfer balance from one 
-        
+        Transfer balance from one
+
         :param amount: amount to be transferred, >0 for casino to sports transfer, <0 for the opposite.
         :type amount: float
         :param session: requests session to be used.
@@ -44,8 +45,19 @@ class Account(BaseEndpoint):
         params = clean_locals(locals())
         date_time_sent = datetime.datetime.utcnow()
         date_time_received = datetime.datetime.utcnow()
-        response = self.request("POST", self.client.urn_main, 'account/transfer', data=params, session=session)
-        return self.process_response(response.json(), resources.AccountTransfer, date_time_sent, date_time_received)
+        response = self.request(
+            "POST",
+            self.client.urn_main,
+            "account/transfer",
+            data=params,
+            session=session,
+        )
+        return self.process_response(
+            response.json(),
+            resources.AccountTransfer,
+            date_time_sent,
+            date_time_received,
+        )
 
     def get_casino_balance(self, session=None):
         """
@@ -59,6 +71,13 @@ class Account(BaseEndpoint):
 
         """
         date_time_sent = datetime.datetime.utcnow()
-        response = self.request("GET", self.client.urn_main, 'account/balance', session=session)
+        response = self.request(
+            "GET", self.client.urn_main, "account/balance", session=session
+        )
         date_time_received = datetime.datetime.utcnow()
-        return self.process_response(response.json(), resources.AccountBalance, date_time_sent, date_time_received)
+        return self.process_response(
+            response.json(),
+            resources.AccountBalance,
+            date_time_sent,
+            date_time_received,
+        )
