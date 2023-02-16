@@ -24,13 +24,13 @@ class KeepAlive(BaseEndpoint):
                 data=self.data,
                 session=session,
             )
-            if response.status_code == 200:
-                response_json = response.json()
-                self.client.set_session_token(
-                    response_json.get("session-token"), response_json.get("user-id")
-                )
-            else:
+            if response.status_code != 200:
                 raise AuthError(response)
+
+            response_json = response.json()
+            self.client.set_session_token(
+                response_json.get("session-token"), response_json.get("user-id")
+            )
         else:
             raise AuthError(response)
 
