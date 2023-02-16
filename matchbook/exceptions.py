@@ -20,7 +20,7 @@ class AuthError(MBError):
         self.status_code = response.status_code
         try:
             self.message = response.json().get("errors")[0].get("messages")
-        except:
+        except Exception:
             self.message = "UNKNOWN"
         super(AuthError, self).__init__(self.message)
 
@@ -51,5 +51,5 @@ class PasswordError(MBError):
 
 class StatusCodeError(MBError):
     def __init__(self, status_code):
-        message = "Status code error: %s" % status_code
+        message = f"Status code error: {status_code}"
         super(StatusCodeError, self).__init__(message)
