@@ -15,10 +15,10 @@ def clean_bet_report(df):
     :rtype: Pandas.Dataframe
 
     """
-    if 'bets' in df.columns:
-        df = df.pipe(parser_function, sculpt_col, 'bets')
-        df.rename(columns={'id':'offer-id'}, inplace=True)
-    for _ in ['submitted-at', 'placed-at', 'settled-at']:
+    if "bets" in df.columns:
+        df = df.pipe(parser_function, sculpt_col, "bets")
+        df.rename(columns={"id": "offer-id"}, inplace=True)
+    for _ in ["submitted-at", "placed-at", "settled-at"]:
         if _ in df.columns:
             df[_] = clean_time(df[_])
     return df
@@ -34,12 +34,12 @@ def clean_commission_report(df):
     :rtype: Pandas.Dataframe
 
     """
-    if 'sub-totals' in df.columns:
-        df = df.pipe(parser_function, sculpt_col, 'sub-totals')
-    if 'settled-at' in df.columns:
-        df['settled-at'] = clean_time(df['settled-at'])
-    if 'placed-at' in df.columns:
-        df['placed-at'] = clean_time(df['placed-at'])
+    if "sub-totals" in df.columns:
+        df = df.pipe(parser_function, sculpt_col, "sub-totals")
+    if "settled-at" in df.columns:
+        df["settled-at"] = clean_time(df["settled-at"])
+    if "placed-at" in df.columns:
+        df["placed-at"] = clean_time(df["placed-at"])
     return df
 
 
@@ -53,8 +53,8 @@ def clean_transaction_report(df):
     :rtype: Pandas.Dataframe
 
     """
-    if 'transactions' in df.columns:
-        df = df.pipe(parser_function, sculpt_col, 'transactions')
+    if "transactions" in df.columns:
+        df = df.pipe(parser_function, sculpt_col, "transactions")
     return df
 
 
@@ -68,14 +68,14 @@ def clean_orders(df):
     :rtype: Pandas.Dataframe
 
     """
-    if 'offers' in df.columns:
-        df = df.pipe(parser_function, sculpt_col, 'offers')
-        df.rename(columns={'id': 'offer-id'}, inplace=True)
-    if 'matched-bets' in df.columns:
-        df = df.pipe(parser_function, sculpt_col, 'matched-bets')
-        df.rename(columns={'id': 'bet-id'}, inplace=True)
-    if 'created-at' in df.columns:
-        df['created-at'] = clean_time(df['created-at'])
+    if "offers" in df.columns:
+        df = df.pipe(parser_function, sculpt_col, "offers")
+        df.rename(columns={"id": "offer-id"}, inplace=True)
+    if "matched-bets" in df.columns:
+        df = df.pipe(parser_function, sculpt_col, "matched-bets")
+        df.rename(columns={"id": "bet-id"}, inplace=True)
+    if "created-at" in df.columns:
+        df["created-at"] = clean_time(df["created-at"])
     return df
 
 
@@ -89,12 +89,12 @@ def clean_settlement_report(df):
     :rtype: Pandas.Dataframe
 
     """
-    if 'markets' in df.columns:
-        df = df.pipe(parser_function, sculpt_col, 'markets')
-    if 'runners' in df.columns:
-        df = df.pipe(parser_function, sculpt_col, 'runners')
-    if 'settled-at' in df.columns:
-        df['settled-at'] = clean_time(df['settled-at'])
+    if "markets" in df.columns:
+        df = df.pipe(parser_function, sculpt_col, "markets")
+    if "runners" in df.columns:
+        df = df.pipe(parser_function, sculpt_col, "runners")
+    if "settled-at" in df.columns:
+        df["settled-at"] = clean_time(df["settled-at"])
     return df
 
 
@@ -108,25 +108,49 @@ def parse_meta_tags(df):
     :rtype: Pandas.Dataframe
 
     """
-    if 'meta-tags' in df.columns:
-        df = df.pipe(parser_function, sculpt_col, 'meta-tags')
-        df.rename(columns={'id': 'tree-id1', 'name': 'tree-name1', 'url-name': 'tree-url1'}, inplace=True)
-    if 'meta-tags' in df.columns:
-        df = df.pipe(parser_function, sculpt_col, 'meta-tags')
-        df.rename(columns={'id': 'type1-id', 'type': 'type1', 'name': 'type1-name', 'url-name': 'type1-url-name'},
-                  inplace=True)
-    if 'tree-id' in df.columns:
-        df.drop('tree-id', axis=1, inplace=True)
-    if 'meta-tags' in df.columns:
-        df = df.pipe(parser_function, sculpt_col, 'meta-tags')
-        df.rename(columns={'id': 'type2-id', 'type': 'type2', 'name': 'type2-name', 'url-name': 'type2-url-name'},
-                  inplace=True)
-    if 'meta-tags' in df.columns:
-        df = df.pipe(parser_function, sculpt_col, 'meta-tags')
-        df.rename(columns={'id': 'type3-id', 'type': 'type3', 'name': 'type3-name', 'url-name': 'type3-url-name'},
-                  inplace=True)
-    if 'meta-tags' in df.columns:
-        df = df.pipe(parser_function, sculpt_col, 'meta-tags')
+    if "meta-tags" in df.columns:
+        df = df.pipe(parser_function, sculpt_col, "meta-tags")
+        df.rename(
+            columns={"id": "tree-id1", "name": "tree-name1", "url-name": "tree-url1"},
+            inplace=True,
+        )
+    if "meta-tags" in df.columns:
+        df = df.pipe(parser_function, sculpt_col, "meta-tags")
+        df.rename(
+            columns={
+                "id": "type1-id",
+                "type": "type1",
+                "name": "type1-name",
+                "url-name": "type1-url-name",
+            },
+            inplace=True,
+        )
+    if "tree-id" in df.columns:
+        df.drop("tree-id", axis=1, inplace=True)
+    if "meta-tags" in df.columns:
+        df = df.pipe(parser_function, sculpt_col, "meta-tags")
+        df.rename(
+            columns={
+                "id": "type2-id",
+                "type": "type2",
+                "name": "type2-name",
+                "url-name": "type2-url-name",
+            },
+            inplace=True,
+        )
+    if "meta-tags" in df.columns:
+        df = df.pipe(parser_function, sculpt_col, "meta-tags")
+        df.rename(
+            columns={
+                "id": "type3-id",
+                "type": "type3",
+                "name": "type3-name",
+                "url-name": "type3-url-name",
+            },
+            inplace=True,
+        )
+    if "meta-tags" in df.columns:
+        df = df.pipe(parser_function, sculpt_col, "meta-tags")
     return df
 
 
@@ -143,16 +167,16 @@ def split_pricedata(df):
     back_count = 0
     lay_count = 0
     for price in df.prices:
-        if price['side'] == 'back':
+        if price["side"] == "back":
             back_count += 1
-            p_d['Back' + str(back_count)] = price['odds']
-            p_d['BackSize' + str(back_count)] = price['available-amount']
-            #p_d['Back' + str(price['odds'])] = price['available-amount']
-        elif price['side'] == 'lay':
+            p_d["Back" + str(back_count)] = price["odds"]
+            p_d["BackSize" + str(back_count)] = price["available-amount"]
+            # p_d['Back' + str(price['odds'])] = price['available-amount']
+        elif price["side"] == "lay":
             lay_count += 1
-            p_d['Lay' + str(lay_count)] = price['odds']
-            p_d['LaySize' + str(lay_count)] = price['available-amount']
-            #p_d['Lay' + str(price['odds'])] = price['available-amount']
+            p_d["Lay" + str(lay_count)] = price["odds"]
+            p_d["LaySize" + str(lay_count)] = price["available-amount"]
+            # p_d['Lay' + str(price['odds'])] = price['available-amount']
         else:
             continue
     return pd.Series(p_d)
@@ -169,14 +193,15 @@ def clean_event_col_types(df):
 
     """
     all_cols = df.columns
-    if 'start' in all_cols:
-        df['start'] = clean_time(df['start'])
-    if 'handicap' in all_cols:
-        df['handicap'] = df.handicap.apply(lambda x: float(x) if x != '' else np.nan)
-    if 'asian-handicap' in all_cols:
-        df['asian-handicap'] = df['asian-handicap'].apply(lambda x:
-                                                          np.mean([float(y) for y in re.findall('\d\.\d', x)]) *
-                                                          (-1 if '-' in x else 1))
+    if "start" in all_cols:
+        df["start"] = clean_time(df["start"])
+    if "handicap" in all_cols:
+        df["handicap"] = df.handicap.apply(lambda x: float(x) if x != "" else np.nan)
+    if "asian-handicap" in all_cols:
+        df["asian-handicap"] = df["asian-handicap"].apply(
+            lambda x: np.mean([float(y) for y in re.findall("\d\.\d", x)])
+            * (-1 if "-" in x else 1)
+        )
     return df
 
 
@@ -190,22 +215,22 @@ def parse_event_data(df):
     :rtype: Pandas.Dataframe
 
     """
-    if 'events' in df.columns:
-        df = df.pipe(parser_function, sculpt_col, 'events')
-    df.rename(columns={'id': 'event-id', 'name': 'event-name'}, inplace=True)
-    if 'category-id' in df.columns:
-        df['category-id'] = df['category-id'].apply(lambda x: x[0])
-    if 'meta-tags' in df.columns:
-        df.drop('meta-tags', axis=1, inplace=True)
-    if 'markets' in df.columns:
-        df = df.pipe(parser_function, sculpt_col, 'markets')
-        df.rename(columns={'id': 'market-id', 'name': 'market-name'}, inplace=True)
-    if 'runners' in df.columns:
-        df = df.pipe(parser_function, sculpt_col, 'runners')
-        df.rename(columns={'id': 'runner-id', 'name': 'runner-name'}, inplace=True)
-    if 'prices' in df.columns:
+    if "events" in df.columns:
+        df = df.pipe(parser_function, sculpt_col, "events")
+    df.rename(columns={"id": "event-id", "name": "event-name"}, inplace=True)
+    if "category-id" in df.columns:
+        df["category-id"] = df["category-id"].apply(lambda x: x[0])
+    if "meta-tags" in df.columns:
+        df.drop("meta-tags", axis=1, inplace=True)
+    if "markets" in df.columns:
+        df = df.pipe(parser_function, sculpt_col, "markets")
+        df.rename(columns={"id": "market-id", "name": "market-name"}, inplace=True)
+    if "runners" in df.columns:
+        df = df.pipe(parser_function, sculpt_col, "runners")
+        df.rename(columns={"id": "runner-id", "name": "runner-name"}, inplace=True)
+    if "prices" in df.columns:
         df = pd.concat([df, df.apply(split_pricedata, axis=1)], axis=1)
-        df.drop('prices', axis=1, inplace=True)
+        df.drop("prices", axis=1, inplace=True)
     return df
 
 
@@ -219,13 +244,13 @@ def parse_single_market(df):
     :rtype: Pandas.Dataframe
 
     """
-    df.rename(columns={'id': 'market-id', 'name': 'market-name'}, inplace=True)
-    if 'runners' in df.columns:
-        df = df.pipe(parser_function, sculpt_col, 'runners')
-        df.rename(columns={'id': 'runner-id', 'name': 'runner-name'}, inplace=True)
-    if 'prices' in df.columns:
+    df.rename(columns={"id": "market-id", "name": "market-name"}, inplace=True)
+    if "runners" in df.columns:
+        df = df.pipe(parser_function, sculpt_col, "runners")
+        df.rename(columns={"id": "runner-id", "name": "runner-name"}, inplace=True)
+    if "prices" in df.columns:
         df = pd.concat([df, df.apply(split_pricedata, axis=1)], axis=1)
-        df.drop('prices', axis=1, inplace=True)
+        df.drop("prices", axis=1, inplace=True)
     return df
 
 
@@ -239,10 +264,10 @@ def parse_single_runner(df):
     :rtype: Pandas.Dataframe
 
     """
-    df.rename(columns={'id': 'runner-id', 'name': 'runner-name'}, inplace=True)
-    if 'prices' in df.columns:
+    df.rename(columns={"id": "runner-id", "name": "runner-name"}, inplace=True)
+    if "prices" in df.columns:
         df = pd.concat([df, df.apply(split_pricedata, axis=1)], axis=1)
-        df.drop('prices', axis=1, inplace=True)
+        df.drop("prices", axis=1, inplace=True)
     return df
 
 
@@ -259,10 +284,12 @@ def parser_function(df, parsing_function, col_name):
     :rtype: Dataframe
 
     """
-    df[col_name] = df[col_name].map(lambda x: pd.DataFrame() if len(x) == 0 else json_normalize(x))
+    df[col_name] = df[col_name].map(
+        lambda x: pd.DataFrame() if len(x) == 0 else json_normalize(x)
+    )
     df = df.apply(parsing_function, args=(col_name,), axis=1)
     df = pd.concat([x for x in df[col_name].tolist()], ignore_index=True)
-    df = df.fillna('')
+    df = df.fillna("")
     return df
 
 
@@ -286,7 +313,9 @@ def sculpt_col(df, col_name):
         else:
             keys = df.keys().tolist()
             keys.pop(keys.index(col_name))
-            df[col_name] = pd.DataFrame(columns=[key for key in keys], data=[[df[key] for key in keys]])
+            df[col_name] = pd.DataFrame(
+                columns=[key for key in keys], data=[[df[key] for key in keys]]
+            )
     except:
         raise ValueError(df[col_name])
     return df

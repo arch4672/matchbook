@@ -11,23 +11,25 @@ class BaseResource(object):
     """
 
     class Meta:
-        identifier = 'id'  # The key with which you uniquely identify this resource.
-        attributes = {'id': 'id'}  # Acceptable attributes that you want to display in this resource.
+        identifier = "id"  # The key with which you uniquely identify this resource.
+        attributes = {
+            "id": "id"
+        }  # Acceptable attributes that you want to display in this resource.
         sub_resources = {}  # sub resources are complex attributes within a resource
         datetime_attributes = ()  # Attributes to be converted to datetime
 
     def __init__(self, **kwargs):
-        self._datetime_sent = kwargs.pop('date_time_sent', None)
-        self.streaming_unique_id = kwargs.pop('streaming_unique_id', None)
-        self.publish_time = kwargs.pop('publish_time', None)
+        self._datetime_sent = kwargs.pop("date_time_sent", None)
+        self.streaming_unique_id = kwargs.pop("streaming_unique_id", None)
+        self.publish_time = kwargs.pop("publish_time", None)
 
         now = datetime.datetime.utcnow()
         self.datetime_created = now
         self._datetime_updated = now
-        self._sub_resource_map = getattr(self.Meta, 'sub_resources', {})
+        self._sub_resource_map = getattr(self.Meta, "sub_resources", {})
         self._data = kwargs
         self.set_attributes(**kwargs)
-        self._data['Latency'] = self.elapsed_time
+        self._data["Latency"] = self.elapsed_time
 
     def set_sub_resources(self, **kwargs):
         """
@@ -38,7 +40,9 @@ class BaseResource(object):
             sub_attr = kwargs.get(attribute_name)
             if sub_attr:
                 if isinstance(sub_attr, list):
-                    value = [resource(**x) for x in sub_attr]  # A list of sub resources is supported
+                    value = [
+                        resource(**x) for x in sub_attr
+                    ]  # A list of sub resources is supported
                 else:
                     value = resource(**sub_attr)  # So is a single resource
                 setattr(self, resource.Meta.identifier, value)
@@ -89,7 +93,7 @@ class BaseResource(object):
         Elapsed time between datetime sent and datetime created
         """
         if self._datetime_sent:
-            return (self.datetime_created-self._datetime_sent).total_seconds()
+            return (self.datetime_created - self._datetime_sent).total_seconds()
 
     def __getattr__(self, item):
         """
@@ -102,7 +106,7 @@ class BaseResource(object):
             return self.__getattribute__(item)
 
     def __repr__(self):
-        return '<%s>' % self.__class__.__name__
+        return "<%s>" % self.__class__.__name__
 
     def __str__(self):
         return self.__class__.__name__

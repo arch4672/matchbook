@@ -7,9 +7,19 @@ from matchbook.utils import clean_locals
 
 
 class Betting(BaseEndpoint):
-
-    def get_orders(self, event_ids=None, market_ids=None, runner_ids=None, offer_id=None, offset=0, per_page=500,
-                   interval=None, side=Side.Default, status=Status.Default, session=None):
+    def get_orders(
+        self,
+        event_ids=None,
+        market_ids=None,
+        runner_ids=None,
+        offer_id=None,
+        offset=0,
+        per_page=500,
+        interval=None,
+        side=Side.Default,
+        status=Status.Default,
+        session=None,
+    ):
         """
         Get all orders which fit the argument filters.
 
@@ -37,19 +47,28 @@ class Betting(BaseEndpoint):
 
         """
         params = clean_locals(locals())
-        params['exchange-type'] = self.client.exchange_type
-        method = 'offers'
+        params["exchange-type"] = self.client.exchange_type
+        method = "offers"
         date_time_sent = datetime.datetime.utcnow()
         if offer_id:
-            method = 'offers/{0}'.format(offer_id)
-            params = {'odds-type': self.client.odds_type}
-            response = self.request("GET", self.client.urn_edge, method, params=params, session=session).json()
+            method = "offers/{0}".format(offer_id)
+            params = {"odds-type": self.client.odds_type}
+            response = self.request(
+                "GET", self.client.urn_edge, method, params=params, session=session
+            ).json()
         else:
             response = self.request(
-                "GET", self.client.urn_edge, method, params=params, target='offers', session=session
+                "GET",
+                self.client.urn_edge,
+                method,
+                params=params,
+                target="offers",
+                session=session,
             )
         date_time_received = datetime.datetime.utcnow()
-        return self.process_response(response, resources.Order, date_time_sent, date_time_received)
+        return self.process_response(
+            response, resources.Order, date_time_sent, date_time_received
+        )
 
     def send_orders(self, runner_id, odds, side, stake, temp_id=None, session=None):
         """
@@ -73,33 +92,66 @@ class Betting(BaseEndpoint):
         """
         date_time_sent = datetime.datetime.utcnow()
         params = {
-            'offers': [],
-            'odds-type': self.client.odds_type,
-            'exchange-type': self.client.exchange_type,
-            'currency': self.client.currency,
+            "offers": [],
+            "odds-type": self.client.odds_type,
+            "exchange-type": self.client.exchange_type,
+            "currency": self.client.currency,
         }
         if isinstance(runner_id, list):
             if isinstance(temp_id, list):
                 for i, _ in enumerate(runner_id):
-                    params['offers'].append({'runner-id': runner_id[i], 'side': side[i], 'stake': stake[i],
-                                             'odds': odds[i], 'temp-id': temp_id[i]})
+                    params["offers"].append(
+                        {
+                            "runner-id": runner_id[i],
+                            "side": side[i],
+                            "stake": stake[i],
+                            "odds": odds[i],
+                            "temp-id": temp_id[i],
+                        }
+                    )
             else:
                 for i, _ in enumerate(runner_id):
-                    params['offers'].append({'runner-id': runner_id[i], 'side': side[i], 'stake': stake[i],
-                                             'odds': odds[i]})
+                    params["offers"].append(
+                        {
+                            "runner-id": runner_id[i],
+                            "side": side[i],
+                            "stake": stake[i],
+                            "odds": odds[i],
+                        }
+                    )
         else:
-            params['offers'].append(
-                {'runner-id': runner_id, 'side': side, 'stake': stake, 'odds': odds, 'temp-id': temp_id}
+            params["offers"].append(
+                {
+                    "runner-id": runner_id,
+                    "side": side,
+                    "stake": stake,
+                    "odds": odds,
+                    "temp-id": temp_id,
+                }
             )
-        method = 'offers'
-        response = self.request("POST", self.client.urn_edge, method, data=params, session=session)
+        method = "offers"
+        response = self.request(
+            "POST", self.client.urn_edge, method, data=params, session=session
+        )
         date_time_received = datetime.datetime.utcnow()
         return self.process_response(
-            response.json().get('offers', []), resources.Order, date_time_sent, date_time_received
+            response.json().get("offers", []),
+            resources.Order,
+            date_time_sent,
+            date_time_received,
         )
 
-    def get_agg_matched_bets(self, event_ids=None, market_ids=None, runner_ids=None, side=None, offset=0, per_page=500,
-                             aggregation_type=AggregationType.Default, session=None):
+    def get_agg_matched_bets(
+        self,
+        event_ids=None,
+        market_ids=None,
+        runner_ids=None,
+        side=None,
+        offset=0,
+        per_page=500,
+        aggregation_type=AggregationType.Default,
+        session=None,
+    ):
         # TODO: Make aggregate matched bets resource
         """
          Get matched bets aggregated.
@@ -123,21 +175,36 @@ class Betting(BaseEndpoint):
         :returns: Orders data
         :raises: MatchbookAPI.bin.exceptions.ApiError
 
-         """
+        """
         params = clean_locals(locals())
         date_time_sent = datetime.datetime.utcnow()
-        method = 'bets/matched/aggregated'
-        response = self.request("GET", self.client.urn_edge, method, params=params, target='bets', session=session)
+        method = "bets/matched/aggregated"
+        response = self.request(
+            "GET",
+            self.client.urn_edge,
+            method,
+            params=params,
+            target="bets",
+            session=session,
+        )
         date_time_received = datetime.datetime.utcnow()
         return self.process_response(
             response, resources.MatchedBets, date_time_sent, date_time_received
         )
 
-    def get_positions(self, event_ids=None, market_ids=None, runner_ids=None, offset=0, per_page=500, session=None):
-        #TODO: Make positions resource
+    def get_positions(
+        self,
+        event_ids=None,
+        market_ids=None,
+        runner_ids=None,
+        offset=0,
+        per_page=500,
+        session=None,
+    ):
+        # TODO: Make positions resource
         """
         Get potential profit or loss on each runner.
-        
+
         :param event_ids: operate only on orders on specified events.
         :type event_ids: comma separated string
         :param market_ids: operate only on orders on specified markets.
@@ -155,11 +222,16 @@ class Betting(BaseEndpoint):
         """
         params = clean_locals(locals())
         date_time_sent = datetime.datetime.utcnow()
-        method = 'account/positions'
-        response = self.request("GET", self.client.urn_edge, method, params=params, session=session)
+        method = "account/positions"
+        response = self.request(
+            "GET", self.client.urn_edge, method, params=params, session=session
+        )
         date_time_received = datetime.datetime.utcnow()
         return self.process_response(
-            response.json().get('bets', []), resources.Order, date_time_sent, date_time_received
+            response.json().get("bets", []),
+            resources.Order,
+            date_time_sent,
+            date_time_received,
         )
 
     def amend_orders(self, order_id, odds, side, stake, session=None):
@@ -182,27 +254,46 @@ class Betting(BaseEndpoint):
         """
         date_time_sent = datetime.datetime.utcnow()
         params = {
-            'offers': [],
-            'odds-type': self.client.odds_type,
-            'exchange-type': self.client.exchange_type,
-            'currency': self.client.currency,
+            "offers": [],
+            "odds-type": self.client.odds_type,
+            "exchange-type": self.client.exchange_type,
+            "currency": self.client.currency,
         }
         if isinstance(order_id, list):
-            method = 'offers'
+            method = "offers"
             for i, _ in enumerate(order_id):
-                params['offers'].append({'id': order_id[i], 'side': side[i], 'stake': stake[i], 'odds': odds[i]})
+                params["offers"].append(
+                    {
+                        "id": order_id[i],
+                        "side": side[i],
+                        "stake": stake[i],
+                        "odds": odds[i],
+                    }
+                )
         else:
-            method = 'offers/{}'.format(order_id)
-            del params['offers']
-            params['stake'] = stake
-            params['odds'] = odds
-        response = self.request('PUT', self.client.urn_edge, method, data=params, session=session)
+            method = "offers/{}".format(order_id)
+            del params["offers"]
+            params["stake"] = stake
+            params["odds"] = odds
+        response = self.request(
+            "PUT", self.client.urn_edge, method, data=params, session=session
+        )
         date_time_received = datetime.datetime.utcnow()
         return self.process_response(
-            response.json().get('offers', response.json()), resources.Order, date_time_sent, date_time_received
+            response.json().get("offers", response.json()),
+            resources.Order,
+            date_time_sent,
+            date_time_received,
         )
 
-    def delete_bulk_orders(self, event_ids=None, market_ids=None, runner_ids=None, offer_ids=None, session=None):
+    def delete_bulk_orders(
+        self,
+        event_ids=None,
+        market_ids=None,
+        runner_ids=None,
+        offer_ids=None,
+        session=None,
+    ):
         """
         Delete all orders which fit the argument filters.
 
@@ -221,11 +312,16 @@ class Betting(BaseEndpoint):
         """
         params = clean_locals(locals())
         date_time_sent = datetime.datetime.utcnow()
-        method = 'offers'
-        response = self.request('DELETE', self.client.urn_edge, method, data=params, session=session)
+        method = "offers"
+        response = self.request(
+            "DELETE", self.client.urn_edge, method, data=params, session=session
+        )
         date_time_received = datetime.datetime.utcnow()
         return self.process_response(
-            response.json().get('offers', []), resources.Order, date_time_sent, date_time_received
+            response.json().get("offers", []),
+            resources.Order,
+            date_time_sent,
+            date_time_received,
         )
 
     def delete_order(self, offer_id, session=None):
@@ -241,8 +337,8 @@ class Betting(BaseEndpoint):
 
         """
         date_time_sent = datetime.datetime.utcnow()
-        method = 'offers/{}'.format(offer_id)
-        response = self.request('DELETE', self.client.urn_edge, method, session=session)
+        method = "offers/{}".format(offer_id)
+        response = self.request("DELETE", self.client.urn_edge, method, session=session)
         date_time_received = datetime.datetime.utcnow()
         return self.process_response(
             response.json(), resources.Order, date_time_sent, date_time_received

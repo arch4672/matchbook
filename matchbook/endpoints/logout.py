@@ -3,11 +3,16 @@ from matchbook.exceptions import AuthError
 
 
 class Logout(BaseEndpoint):
-
     def __call__(self, session=None):
-        response = self.request("DELETE", self.client.urn_main, 'security/session', data=self.data, session=session)
+        response = self.request(
+            "DELETE",
+            self.client.urn_main,
+            "security/session",
+            data=self.data,
+            session=session,
+        )
         self.client.set_session_token(None, None)
 
     @property
     def data(self):
-        return {'username': self.client.username, 'password': self.client.password}
+        return {"username": self.client.username, "password": self.client.password}

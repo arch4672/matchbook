@@ -19,7 +19,7 @@ from matchbook.resources.reportresources import (
     RunnerSettlementReport,
     CommissionReport,
     TransactionReport,
-    SettlementEvent
+    SettlementEvent,
 )
 
 from matchbook.resources.referencedataresources import (
