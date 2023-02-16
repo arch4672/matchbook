@@ -1,4 +1,3 @@
-
 import datetime
 
 from matchbook import resources
@@ -8,9 +7,16 @@ from matchbook.enums import TransactionCategories, TransactionTypes, PeriodFilte
 
 
 class Reporting(BaseEndpoint):
-
-    def get_old_transactions_report(self, offset=0, per_page=500, after=None, before=None, period=PeriodFilter.Default,
-                                    categories=TransactionCategories.Exchange, session=None):
+    def get_old_transactions_report(
+        self,
+        offset=0,
+        per_page=500,
+        after=None,
+        before=None,
+        period=PeriodFilter.Default,
+        categories=TransactionCategories.Exchange,
+        session=None,
+    ):
         """
         Get paginated historical transactions, filtered by arguments specified
 
@@ -35,15 +41,29 @@ class Reporting(BaseEndpoint):
         params = clean_locals(locals())
         date_time_sent = datetime.datetime.utcnow()
         response = self.request(
-            'GET', self.client.urn_main, 'reports/transactions', params=params, target='transactions', session=session
+            "GET",
+            self.client.urn_main,
+            "reports/transactions",
+            params=params,
+            target="transactions",
+            session=session,
         )
         return self.process_response(
-            response, resources.TransactionReport,
-            date_time_sent, datetime.datetime.now()
+            response,
+            resources.TransactionReport,
+            date_time_sent,
+            datetime.datetime.now(),
         )
 
-    def get_new_transactions_report(self, transaction_type=TransactionTypes.All, offset=0, per_page=500, 
-                                    after=None, before=None, session=None):
+    def get_new_transactions_report(
+        self,
+        transaction_type=TransactionTypes.All,
+        offset=0,
+        per_page=500,
+        after=None,
+        before=None,
+        session=None,
+    ):
         # TODO: Map resource and get example data for data_structures
         """
         Get paginated historical transactions, filtered by arguments specified
@@ -67,15 +87,32 @@ class Reporting(BaseEndpoint):
         params = clean_locals(locals())
         date_time_sent = datetime.datetime.utcnow()
         response = self.request(
-            'GET', self.client.urn_edge, 'reports/v1/transactions', params=params,
-            target='transactions', session=session
+            "GET",
+            self.client.urn_edge,
+            "reports/v1/transactions",
+            params=params,
+            target="transactions",
+            session=session,
         )
-        return self.process_response(response, resources.TransactionReport, date_time_sent, datetime.datetime.now())
+        return self.process_response(
+            response,
+            resources.TransactionReport,
+            date_time_sent,
+            datetime.datetime.now(),
+        )
 
-    def get_current_offers(self, sport_ids=None, event_ids=None, market_ids=None, offset=0, per_page=500, session=None):
+    def get_current_offers(
+        self,
+        sport_ids=None,
+        event_ids=None,
+        market_ids=None,
+        offset=0,
+        per_page=500,
+        session=None,
+    ):
         """
         Get a list of current offers i.e. offers on markets yet to be settled.
-        
+
         :param sport_ids: operate only on orders on specified sports.
         :type sport_ids: comma separated string
         :param event_ids: operate only on orders on specified events.
@@ -95,14 +132,29 @@ class Reporting(BaseEndpoint):
         params = clean_locals(locals())
         date_time_sent = datetime.datetime.utcnow()
         response = self.request(
-            'GET', self.client.urn_edge, 'reports/v1/offers/current', params=params, target='offers', session=session
+            "GET",
+            self.client.urn_edge,
+            "reports/v1/offers/current",
+            params=params,
+            target="offers",
+            session=session,
         )
-        return self.process_response(response, resources.Order, date_time_sent, datetime.datetime.now())
+        return self.process_response(
+            response, resources.Order, date_time_sent, datetime.datetime.now()
+        )
 
-    def get_current_bets(self, sport_ids=None, event_ids=None, market_ids=None, offset=0, per_page=500, session=None):
+    def get_current_bets(
+        self,
+        sport_ids=None,
+        event_ids=None,
+        market_ids=None,
+        offset=0,
+        per_page=500,
+        session=None,
+    ):
         """
         Get a list of current bets i.e. offers that have been matched on markets yet to be settled.
-        
+
         :param sport_ids: operate only on orders on specified sports.
         :type sport_ids: comma separated string
         :param event_ids: operate only on orders on specified events.
@@ -122,15 +174,31 @@ class Reporting(BaseEndpoint):
         params = clean_locals(locals())
         date_time_sent = datetime.datetime.utcnow()
         response = self.request(
-            'GET', self.client.urn_edge, 'reports/v1/bets/current', params=params, target='bets', session=session
+            "GET",
+            self.client.urn_edge,
+            "reports/v1/bets/current",
+            params=params,
+            target="bets",
+            session=session,
         )
-        return self.process_response(response, resources.BetReport, date_time_sent, datetime.datetime.now())
+        return self.process_response(
+            response, resources.BetReport, date_time_sent, datetime.datetime.now()
+        )
 
-    def get_settled_bets(self, sport_ids=None, event_ids=None, market_ids=None, before=None, after=None,
-                         offset=0, per_page=500, session=None):
+    def get_settled_bets(
+        self,
+        sport_ids=None,
+        event_ids=None,
+        market_ids=None,
+        before=None,
+        after=None,
+        offset=0,
+        per_page=500,
+        session=None,
+    ):
         """
         Get a list of settled bets.
-        
+
         :param sport_ids: operate only on bets on specified sports.
         :type sport_ids: comma separated string
         :param event_ids: operate only on bets on specified events.
@@ -153,8 +221,13 @@ class Reporting(BaseEndpoint):
         params = clean_locals(locals())
         date_time_sent = datetime.datetime.utcnow()
         response = self.request(
-            'GET', self.client.urn_edge, 'reports/v1/bets/settled', params=params, target='bets', session=session
+            "GET",
+            self.client.urn_edge,
+            "reports/v1/bets/settled",
+            params=params,
+            target="bets",
+            session=session,
         )
-        return self.process_response(response, resources.BetReport, date_time_sent, datetime.datetime.now())
-
-
+        return self.process_response(
+            response, resources.BetReport, date_time_sent, datetime.datetime.now()
+        )
