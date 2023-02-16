@@ -69,20 +69,22 @@ class BaseEndpoint(object):
                 ).json()
                 for x in response_json
             ]
-        else:
-            response_result = response_json.get("result", response_json)
-            if isinstance(response_result, list):
-                return [
-                    resource(
-                        date_time_sent=date_time_sent,
-                        TIMESTAMP=date_time_received.strftime("%Y-%m-%d %H:%M:%S.%f"),
-                        **x,
-                    ).json()
-                    for x in response_result
-                ]
-            else:
-                return resource(
+
+        response_result = response_json.get("result", response_json)
+
+        return (
+            [
+                resource(
                     date_time_sent=date_time_sent,
                     TIMESTAMP=date_time_received.strftime("%Y-%m-%d %H:%M:%S.%f"),
-                    **response_result,
+                    **x,
                 ).json()
+                for x in response_result
+            ]
+            if isinstance(response_result, list)
+            else resource(
+                date_time_sent=date_time_sent,
+                TIMESTAMP=date_time_received.strftime("%Y-%m-%d %H:%M:%S.%f"),
+                **response_result,
+            ).json()
+        )
