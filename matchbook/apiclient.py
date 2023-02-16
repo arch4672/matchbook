@@ -16,7 +16,7 @@ class APIClient(BaseClient):
         self.reporting = endpoints.Reporting(self)
 
     def __repr__(self):
-        return "<APIClient [%s]>" % self.username
+        return f"<APIClient [{self.username}]>"
 
     def __str__(self):
         return "APIClient"
