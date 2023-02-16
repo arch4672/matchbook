@@ -169,13 +169,13 @@ def split_pricedata(df):
     for price in df.prices:
         if price["side"] == "back":
             back_count += 1
-            p_d["Back" + str(back_count)] = price["odds"]
-            p_d["BackSize" + str(back_count)] = price["available-amount"]
+            p_d[f"Back{back_count}"] = price["odds"]
+            p_d[f"BackSize{back_count}"] = price["available-amount"]
             # p_d['Back' + str(price['odds'])] = price['available-amount']
         elif price["side"] == "lay":
             lay_count += 1
-            p_d["Lay" + str(lay_count)] = price["odds"]
-            p_d["LaySize" + str(lay_count)] = price["available-amount"]
+            p_d[f"Lay{lay_count}"] = price["odds"]
+            p_d[f"LaySize{lay_count}"] = price["available-amount"]
             # p_d['Lay' + str(price['odds'])] = price['available-amount']
         else:
             continue
