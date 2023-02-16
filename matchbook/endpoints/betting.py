@@ -271,7 +271,7 @@ class Betting(BaseEndpoint):
                     }
                 )
         else:
-            method = "offers/{}".format(order_id)
+            method = f"offers/{order_id}"
             del params["offers"]
             params["stake"] = stake
             params["odds"] = odds
@@ -337,7 +337,7 @@ class Betting(BaseEndpoint):
 
         """
         date_time_sent = datetime.datetime.utcnow()
-        method = "offers/{}".format(offer_id)
+        method = f"offers/{offer_id}"
         response = self.request("DELETE", self.client.urn_edge, method, session=session)
         date_time_received = datetime.datetime.utcnow()
         return self.process_response(
