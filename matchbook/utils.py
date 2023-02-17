@@ -1,4 +1,8 @@
 import datetime
+import requests
+
+from typing import Any, List, Dict
+
 from matchbook.exceptions import ApiError
 
 
@@ -14,7 +18,7 @@ def clean_time(col):
     return col.apply(lambda x: datetime.datetime.strptime(x, "%Y-%m-%dT%H:%M:%S.%fZ"))
 
 
-def filter_dicts(d):
+def filter_dicts(d: Dict[str, Any]) -> Dict[str, Any]:
     """
     Filter dict to remove None values.
 
@@ -27,7 +31,7 @@ def filter_dicts(d):
     return {k: v for k, v in d.items() if v is not None}
 
 
-def clean_locals(params):
+def clean_locals(params: Dict[str, Any]) -> Dict[str, Any]:
     """
     Clean up locals dict, remove empty and self params.
 
@@ -45,13 +49,13 @@ def clean_locals(params):
     return {k.replace("_", "-"): v for k, v in clean_params.items()}
 
 
-def check_call_complete(response):
+def check_call_complete(response: requests.Response):
     return response.get("total", 0) < (
         response.get("per-page", 20) + response.get("offset", 0)
     )
 
 
-def check_status_code(response, codes=None):
+def check_status_code(response: requests.Response, codes: List[int] = None):
     """Checks response.status_code is in codes
     :param response: Requests response
     :param codes: List of accepted codes or callable
