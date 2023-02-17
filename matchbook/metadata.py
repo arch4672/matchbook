@@ -288,7 +288,7 @@ def parser_function(df, parsing_function, col_name):
         lambda x: pd.DataFrame() if len(x) == 0 else json_normalize(x)
     )
     df = df.apply(parsing_function, args=(col_name,), axis=1)
-    df = pd.concat([x for x in df[col_name].tolist()], ignore_index=True)
+    df = pd.concat(list(df[col_name].tolist()), ignore_index=True)
     df = df.fillna("")
     return df
 
@@ -314,7 +314,7 @@ def sculpt_col(df, col_name):
             keys = df.keys().tolist()
             keys.pop(keys.index(col_name))
             df[col_name] = pd.DataFrame(
-                columns=[key for key in keys], data=[[df[key] for key in keys]]
+                columns=list(keys), data=[[df[key] for key in keys]]
             )
     except:
         raise ValueError(df[col_name])
