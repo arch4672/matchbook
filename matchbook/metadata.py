@@ -5,7 +5,7 @@ import numpy as np
 import re
 
 
-def clean_bet_report(df):
+def clean_bet_report(df: pd.DataFrame) -> pd.DataFrame:
     """
     Clean raw data returned from MatchbookAPI.MatchbookAPI.get_bets_report
 
@@ -24,7 +24,7 @@ def clean_bet_report(df):
     return df
 
 
-def clean_commission_report(df):
+def clean_commission_report(df: pd.DataFrame) -> pd.DataFrame:
     """
     Clean raw data returned from MatchbookAPI.MatchbookAPI.get_commission_report
 
@@ -43,7 +43,7 @@ def clean_commission_report(df):
     return df
 
 
-def clean_transaction_report(df):
+def clean_transaction_report(df: pd.DataFrame) -> pd.DataFrame:
     """
     Clean raw data returned from MatchbookAPI.MatchbookAPI.get_transactions_report
 
@@ -58,7 +58,7 @@ def clean_transaction_report(df):
     return df
 
 
-def clean_orders(df):
+def clean_orders(df: pd.DataFrame) -> pd.DataFrame:
     """
     Clean raw data returned from MatchbookAPI.MatchbookAPI.get_orders
 
@@ -79,7 +79,7 @@ def clean_orders(df):
     return df
 
 
-def clean_settlement_report(df):
+def clean_settlement_report(df: pd.DataFrame) -> pd.DataFrame:
     """
     Clean raw data returned from MatchbookAPI.MatchbookAPI.get_settlement_report
 
@@ -98,7 +98,7 @@ def clean_settlement_report(df):
     return df
 
 
-def parse_meta_tags(df):
+def parse_meta_tags(df: pd.DataFrame) -> pd.DataFrame:
     """
     Clean raw data returned from MatchbookAPI.MatchbookAPI.get_navigation
 
@@ -154,7 +154,7 @@ def parse_meta_tags(df):
     return df
 
 
-def split_pricedata(df):
+def split_pricedata(df: pd.DataFrame) -> pd.Series:
     """
     Splits prices dictionary into individual columns by level.
 
@@ -182,7 +182,7 @@ def split_pricedata(df):
     return pd.Series(p_d)
 
 
-def clean_event_col_types(df):
+def clean_event_col_types(df: pd.DataFrame) -> pd.DataFrame:
     """
     Clean specific columns returned from events requests.
 
@@ -205,7 +205,7 @@ def clean_event_col_types(df):
     return df
 
 
-def parse_event_data(df):
+def parse_event_data(df: pd.DataFrame) -> pd.DataFrame:
     """
     Clean raw data returned from MatchbookAPI.MatchbookAPI.get_events or MatchbookAPI.MatchbookAPI.get_event_allmarkets.
 
@@ -234,7 +234,7 @@ def parse_event_data(df):
     return df
 
 
-def parse_single_market(df):
+def parse_single_market(df: pd.DataFrame) -> pd.DataFrame:
     """
     Clean raw data returned from MatchbookAPI.MatchbookAPI.get_event_singlemarket or MatchbookAPI.MatchbookAPI.get_event_marketrunners.
 
@@ -254,7 +254,7 @@ def parse_single_market(df):
     return df
 
 
-def parse_single_runner(df):
+def parse_single_runner(df: pd.DataFrame) -> pd.DataFrame:
     """
     Clean raw data returned from MatchbookAPI.MatchbookAPI.get_event_singlerunner.
 
@@ -271,7 +271,9 @@ def parse_single_runner(df):
     return df
 
 
-def parser_function(df, parsing_function, col_name):
+def parser_function(
+    df: pd.DataFrame, parsing_function: function, col_name: str
+) -> pd.DataFrame:
     """
     Parse a specified dataframe column when provided with parsing breakdowns to use.
 
@@ -293,7 +295,7 @@ def parser_function(df, parsing_function, col_name):
     return df
 
 
-def sculpt_col(df, col_name):
+def sculpt_col(df: pd.DataFrame, col_name: str) -> pd.DataFrame:
     """
     Flattens Dataframe where column is of type dataframe, applied cell by cell.
 
