@@ -11,7 +11,14 @@ class BaseEndpoint(object):
         self.client = parent
 
     def request(
-        self, request_method, urn, method, params={}, data={}, target=None, session=None
+        self,
+        request_method,
+        urn,
+        method,
+        params=None,
+        data=None,
+        target=None,
+        session=None,
     ):
         """
         :param request_method: type of request to be sent.
